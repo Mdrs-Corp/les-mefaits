@@ -1,22 +1,20 @@
 from docx import Document
 from docx.shared import RGBColor,Pt
 import random
-document = Document()
 
-
-filemig=open('alexis.bmp','rb')
+asci=" .:-=+*#%@"[::-1]
+title=input("Image à transformer: ")
+filemig=open(title,'rb')
 mig=filemig.read()
 filemig.close()
-asci=" .:-=+*#%@"[::-1]
+
 w=int.from_bytes(mig[18:22],byteorder='little')
+
 mig=mig[54:]
+
+document = Document()
 p = document.add_paragraph('')
 p.paragraph_format.line_spacing = 0.5
-def tobyte(nb:int):
-    he=hex(nb)[2:]
-    while len(he)<2:
-        he="0"+he
-    return bytes.fromhex(he)
 
 
 for i in range(len(mig)-3,0,-3):
@@ -28,8 +26,8 @@ for i in range(len(mig)-3,0,-3):
     font.name="Consolas"
     if i%w==0:
         p.add_run('\n')
+        print(int(100-i/len(mig)*100),"%")
 
-title=''
-for i in range(10):title+=random.choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
-document.save(f'./rendu/{title}.docx')
-print(title)
+
+document.save(title[:-4]+'.docx')
+print(f"Saved as {title[:-4]}.docx")
