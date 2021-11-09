@@ -17,3 +17,7 @@ If you want to use this program, make sure that all of the files are in 24bits B
    
  ## Méfait #4
  The méfait is comming...
+ 
+ ## Méfait #5
+Fait des docx grace à python-docx 
+pip install python-docx
