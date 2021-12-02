@@ -24,3 +24,6 @@ If you want to use this program, make sure that all of the files are in 24bits B
 ## Méfait #5 : Réponses au TP
 Fait des docx grâce à python-docx :
 `pip install python-docx`
+
+## Méfait #6 : Video propagandesque
+Genere une video remplie de symbole et messages cachée
