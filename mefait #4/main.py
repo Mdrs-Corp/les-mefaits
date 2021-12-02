@@ -16,8 +16,8 @@ nq = {"question": ("Sa fait combien"+str(a)+"*"+str(b)),
 "correct": a*b}
 RJOHICQSBKJRHKUSHRJLIQZEROIHU["questions"].append(nq)
 
-nq = {"question": "Amato?",
-"anwsers": ["Amato"+"⁈"*i for i in range(0, 50)]+["pa Amato"],
+nq = {"question": "Amato⁈",
+"anwsers": ["Amato"+" "*i for i in range(0, 50)]+["pa Amato"],
 "correct": 50}
 RJOHICQSBKJRHKUSHRJLIQZEROIHU["questions"].append(nq)
 
