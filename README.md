@@ -26,4 +26,4 @@ Fait des docx grâce à python-docx :
 `pip install python-docx`
 
 ## Méfait #6 : Video propagandesque
-Genere une video remplie de symbole et messages cachée
+Génère une video remplie de symbole et messages cachée
