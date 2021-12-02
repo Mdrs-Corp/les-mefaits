@@ -1,0 +1,29 @@
+{
+  "questions": [
+    {
+      "question": "Quelle est la meilleure spécialité du monde",
+      "anwsers": [
+        "NSI", "SI", "SVT"
+      ],
+      "correct": 0
+    }, {
+      "question": "Quel est le meilleur musicien du monde",
+      "anwsers": [
+        "The jeuuj", "Alexis Derail", "Momoladebrouill"
+      ],
+      "correct": 2
+    }, {
+      "question": "Lequel de ces nombres représente le violet",
+      "anwsers": [
+        "0xFF00FF","0x6174ee","0"
+      ],
+      "correct": 0
+    }, {
+      "question": "Quel est le meilleur dossier du dossier SI",
+      "anwsers": [
+        "ELEC", "PHYS", "MECA"
+      ],
+      "correct": 1
+    }
+  ]
+}
