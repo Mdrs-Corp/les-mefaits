@@ -21,11 +21,17 @@ nq = {"question": "Amato⁈",
 "correct": 50}
 RJOHICQSBKJRHKUSHRJLIQZEROIHU["questions"].append(nq)
 
+nq = {"question": "Hotel⁈",
+"anwsers": ["Trivago"],
+"correct": 0}
+RJOHICQSBKJRHKUSHRJLIQZEROIHU["questions"].append(nq)
+
 dos("./res")
 path='./res/'
 for KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ in RJOHICQSBKJRHKUSHRJLIQZEROIHU["questions"]:
     # La question en titre de fichier text
-    file(path+KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["question"])
+    dos(path+"_"+KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["question"])
+    file(path+"_"+KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["question"]+"/C LA QUESTION PTN")
 
     OERIJZEOZRJIERZEORPJIKJOEIZR = KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["anwsers"][KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["correct"]]
 
