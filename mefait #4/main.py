@@ -1,9 +1,9 @@
 import os, json
 import random
 dos=lambda path: os.mkdir(path)
-def file(path):
+def file(path, content):
     f = open(path+".txt", "a")
-    f.write("https://bit.ly/IqT6zt")
+    f.write(content)
     f.close()
 
 with open('paths.json') as f:
@@ -30,15 +30,16 @@ dos("./res")
 path='./res/'
 for KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ in RJOHICQSBKJRHKUSHRJLIQZEROIHU["questions"]:
     # La question en titre de fichier text
-    dos(path+"_"+KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["question"])
-    file(path+"_"+KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["question"]+"/C LA QUESTION PTN")
+    dos(path+"["+KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["question"]+"]")
+    file(path+"["+KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["question"]+"]"+"/C LA QUESTION PTN", "https://bit.ly/IqT6zt")
 
     OERIJZEOZRJIERZEORPJIKJOEIZR = KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["anwsers"][KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["correct"]]
 
     for i in KLEZRJLKHSDHJLKETRHGUERIEHIUEZKJERQ["anwsers"]:
         dos(path+i)
         if i != OERIJZEOZRJIERZEORPJIKJOEIZR:
-            os.system('cp hom.lnk "'+os.path.join(path,i)+'/fin.lnk"')
+            os.system('cp hom.lnk "'+os.path.join(path,i)+'/non.lnk"')
 
     # continuer à la prochaine descendance
     path+=OERIJZEOZRJIERZEORPJIKJOEIZR+"/"
+file(path+"GG", "https://rarible.com/token/0xF6793dA657495ffeFF9Ee6350824910Abc21356C:78401752367104886489714714523507263898292811518299422941796928245418816438273?tab=details")
