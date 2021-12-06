@@ -28,11 +28,13 @@
       constructor() {
         this.x = Math.random() * width;
         this.y = 0;
+        this.sx = 60;
+        this.sy = 60;
         this.aaron = false;
       }
       draw() {
         context.fillStyle = "yellow";
-        context.fillRect(this.x, this.y, 10, 10);
+        context.fillRect(this.x - this.sx/2, this.y - this.sy/2, this.sx, this.sy);
       }
       update() {
         this.y += 1;
@@ -45,19 +47,29 @@
       constructor(a, b) {
         this.x = a;
         this.y = b;
+        this.speed = bulletSpeed;
+        this.aaron = false;
       }
       draw() {
-        context.fillStyle = "purple";
+        context.fillStyle = "rgb(158, 0, 255)";
         context.fillRect(this.x, this.y, 5, 10);
+      }
+      update(){
+        this.y -= this.speed;
+        if (this.y < 0) {
+          this.aaron = true;
+        }
       }
     }
     class Joseph {
       constructor() {
         this.x = width / 2;
+        this.sx = 40;
+        this.sy = 40;
       }
       draw() {
         context.fillStyle = "#6174ee";
-        context.fillRect(this.x - 10, height - 50, 20, 20);
+        context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);
       }
     }
 
@@ -86,7 +98,7 @@
       } else if (e.keyCode == 39) {
         right = true;
       } else if (e.keyCode == 38) {
-        vincents.push(new Vincent(joseph.x, height - 50));
+        up = true;
       }
     }, false);
     document.addEventListener('keyup', (e) => {
@@ -95,7 +107,7 @@
       } else if (e.keyCode == 39) {
         right = false;
       } else if (e.keyCode == 38) {
-        //vincents.push(new Vincent(joseph.x, height - 50));
+        up = false;
       }
     })
     joseph = new Joseph();
@@ -105,8 +117,12 @@
 
     let left = false;
     let right = false;
+    let up = false;
 
     let speed = 5;
+    let bulletSpeed = 8;
+
+    let shoot = 0;
 
     function boucle() {
       context.clearRect(0, 0, width, height);
@@ -115,6 +131,19 @@
       context.rect(0, 0, width, height);
       context.fill();
       context.closePath();
+
+      if (left){
+        joseph.x -= speed;
+      }
+      if (right){
+        joseph.x += speed;
+      }
+      if (up && shoot == 0) {
+        vincents.push(new Vincent(joseph.x, height - 50));
+        shoot = 10;
+      }
+      shoot = Math.max(0, shoot-1);
+
       if (Math.random() > .99) {
         alexis.push(new Alexis())
       }
@@ -122,18 +151,16 @@
         alexi.draw();
         alexi.update();
       }
-      alexis = alexis.filter((el) => !el.aaron);
       for (let vincent of vincents) {
         vincent.draw();
-      }
-      if (left){
-        joseph.x -= speed;
-      }
-      if (right){
-        joseph.x += speed;
+        vincent.update();
       }
       joseph.draw();
       joseph.x = ((joseph.x % width) + width) % width;
+
+      alexis = alexis.filter((el) => !el.aaron);
+      vincents = vincents.filter((el) => !el.aaron);
+
       window.requestAnimationFrame(boucle);
     }
     boucle()
