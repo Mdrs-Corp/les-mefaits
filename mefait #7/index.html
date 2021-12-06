@@ -82,20 +82,31 @@
     document.addEventListener("keydown", (e) => {
       if (e.repeat) return;
       if (e.keyCode == 37) {
-        direc = -1
+        left = true;
       } else if (e.keyCode == 39) {
-        direc = 1
+        right = true;
       } else if (e.keyCode == 38) {
         vincents.push(new Vincent(joseph.x, height - 50));
       }
     }, false);
     document.addEventListener('keyup', (e) => {
-      direc = 0
+      if (e.keyCode == 37) {
+        left = false;
+      } else if (e.keyCode == 39) {
+        right = false;
+      } else if (e.keyCode == 38) {
+        //vincents.push(new Vincent(joseph.x, height - 50));
+      }
     })
     joseph = new Joseph()
     direc = 0
     vincents = []
     alexis = [new Alexis()]
+
+    let left = false;
+    let right = false;
+
+    let speed = 5;
 
     function boucle() {
       context.clearRect(0, 0, width, height);
@@ -115,10 +126,14 @@
       for (let vincent of vincents) {
         vincent.draw()
       }
+      if (left){
+        joseph.x -= speed;
+      }
+      if (right){
+        joseph.x += speed;
+      }
       joseph.draw()
-      joseph.x += direc * 5
-      joseph.x = joseph.x % width
-      joseph.x = joseph.x < 0 ? width + joseph.x : joseph.x
+      joseph.x = ((joseph.x % width) + width) % width;
       window.requestAnimationFrame(boucle)
     }
     boucle()
