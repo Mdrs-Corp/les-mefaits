@@ -33,12 +33,13 @@
         this.aaron = false;
       }
       draw() {
-        context.fillStyle = "yellow";
-        context.fillRect(this.x - this.sx/2, this.y - this.sy/2, this.sx, this.sy);
+        context.drawImage(alex, this.x - this.sx/2, this.y - this.sy/2, this.sx, this.sy);
+        /*context.fillStyle = "yellow";
+        context.fillRect(this.x - this.sx/2, this.y - this.sy/2, this.sx, this.sy);*/
       }
       update() {
-        this.y += 1;
-        if (this.y >= height) {
+        this.y += alexisSpeed;
+        if (this.y >= height+this.sy) {
           this.aaron = true;
         }
       }
@@ -64,12 +65,13 @@
     class Joseph {
       constructor() {
         this.x = width / 2;
-        this.sx = 40;
-        this.sy = 40;
+        this.sx = 90;
+        this.sy = 90;
       }
       draw() {
-        context.fillStyle = "#6174ee";
-        context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);
+        context.drawImage(rayan, this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);
+        /*context.fillStyle = "#6174ee";
+        context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);*/
       }
     }
 
@@ -121,8 +123,15 @@
 
     let speed = 5;
     let bulletSpeed = 8;
+    let alexisSpeed = 0.8;
 
     let shoot = 0;
+
+    let alex = new Image();
+    alex.src = "alexis.bmp";
+
+    let rayan = new Image();
+    rayan.src = "ryan.png";
 
     function boucle() {
       context.clearRect(0, 0, width, height);
