@@ -48,17 +48,24 @@
       constructor(a, b) {
         this.x = a;
         this.y = b;
+        this.sx = 5;
+        this.sy = 10;
         this.speed = bulletSpeed;
         this.aaron = false;
       }
       draw() {
         context.fillStyle = "rgb(158, 0, 255)";
-        context.fillRect(this.x, this.y, 5, 10);
+        context.fillRect(this.x - this.sx/2, this.y - this.sy/2, this.sx, this.sy);
       }
       update(){
         this.y -= this.speed;
         if (this.y < 0) {
           this.aaron = true;
+        }
+      }
+      collide(alex){
+        if(!(this.x - this.sx/2 > alex.x + alex.sx/2 || this.y - this.sy/2 > alex.y + alex.sy || this.x + this.sx < alex.x - alex.sx/2 || this.y + this.sy < alex.y - alex.sy)){
+          alex.aaron = true;
         }
       }
     }
@@ -163,6 +170,9 @@
       for (let vincent of vincents) {
         vincent.draw();
         vincent.update();
+        for (let alexi of alexis){
+          vincent.collide(alexi);
+        }
       }
       joseph.draw();
       joseph.x = ((joseph.x % width) + width) % width;
