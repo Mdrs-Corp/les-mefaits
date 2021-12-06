@@ -19,25 +19,25 @@
   <canvas id="game"></canvas>
 
   <script type='text/javascript'>
-    console.log(1 == "1")
+    console.log(1 == "1");
     const canvas = document.getElementById("game");
     const context = canvas.getContext("2d");
     var width = window.innerWidth;
     var height = window.innerHeight;
     class Alexis {
       constructor() {
-        this.x = Math.random() * width
-        this.y = 0
-        this.aaron = false
+        this.x = Math.random() * width;
+        this.y = 0;
+        this.aaron = false;
       }
       draw() {
-        context.fillStyle = "yellow"
-        context.fillRect(this.x, this.y, 10, 10)
+        context.fillStyle = "yellow";
+        context.fillRect(this.x, this.y, 10, 10);
       }
       update() {
-        this.y += 1
+        this.y += 1;
         if (this.y >= height) {
-          this.aaron = true
+          this.aaron = true;
         }
       }
     }
@@ -47,7 +47,7 @@
         this.y = b;
       }
       draw() {
-        context.fillStyle = "purple"
+        context.fillStyle = "purple";
         context.fillRect(this.x, this.y, 5, 10);
       }
     }
@@ -56,8 +56,8 @@
         this.x = width / 2;
       }
       draw() {
-        context.fillStyle = "#6174ee"
-        context.fillRect(this.x - 10, height - 50, 20, 20)
+        context.fillStyle = "#6174ee";
+        context.fillRect(this.x - 10, height - 50, 20, 20);
       }
     }
 
@@ -98,10 +98,10 @@
         //vincents.push(new Vincent(joseph.x, height - 50));
       }
     })
-    joseph = new Joseph()
-    direc = 0
-    vincents = []
-    alexis = [new Alexis()]
+    joseph = new Joseph();
+    direc = 0;
+    vincents = [];
+    alexis = [new Alexis()];
 
     let left = false;
     let right = false;
@@ -119,12 +119,12 @@
         alexis.push(new Alexis())
       }
       for (let alexi of alexis) {
-        alexi.draw()
-        alexi.update()
+        alexi.draw();
+        alexi.update();
       }
-      alexis = alexis.filter((el) => !el.aaron)
+      alexis = alexis.filter((el) => !el.aaron);
       for (let vincent of vincents) {
-        vincent.draw()
+        vincent.draw();
       }
       if (left){
         joseph.x -= speed;
@@ -132,9 +132,9 @@
       if (right){
         joseph.x += speed;
       }
-      joseph.draw()
+      joseph.draw();
       joseph.x = ((joseph.x % width) + width) % width;
-      window.requestAnimationFrame(boucle)
+      window.requestAnimationFrame(boucle);
     }
     boucle()
   </script>
