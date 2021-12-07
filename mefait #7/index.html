@@ -2,188 +2,259 @@
 <html>
 
 <head>
-  <title>sudoku solver</title>
-  <style type="text/css">
-    canvas {
-      display: block;
-    }
-
-    html,
-    body {
-      margin: 0px;
-    }
-  </style>
+    <title>SI Invadeur 🤌</title>
+    <style type="text/css">
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        html,
+        body {
+            margin: 0px;
+        }
+        
+        #score {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            color: white;
+            font-size: 50px;
+            text-align: center;
+            font-family: consolas;
+            font-weight: bold;
+            z-index: 1;
+        }
+    </style>
 </head>
 
 <body>
-  <canvas id="game"></canvas>
+    <canvas id="game"></canvas>
+    <p><span id="score">0</span> points</p>
+    <script type='text/javascript'>
+        console.log(1 == "1"); // Don't touch it
 
-  <script type='text/javascript'>
-    console.log(1 == "1");
-    const canvas = document.getElementById("game");
-    const context = canvas.getContext("2d");
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    class Alexis {
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = 0;
-        this.sx = 60;
-        this.sy = 60;
-        this.aaron = false;
-      }
-      draw() {
-        context.drawImage(alex, this.x - this.sx/2, this.y - this.sy/2, this.sx, this.sy);
-        /*context.fillStyle = "yellow";
-        context.fillRect(this.x - this.sx/2, this.y - this.sy/2, this.sx, this.sy);*/
-      }
-      update() {
-        this.y += alexisSpeed;
-        if (this.y >= height+this.sy) {
-          this.aaron = true;
+        const canvas = document.getElementById("game");
+        const context = canvas.getContext("2d");
+        const spanScore = document.getElementById("score");
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        const tps = 25; // nombre de frames entre chaque tir
+        const speed = 5;
+        const bulletSpeed = 8;
+        let alexisSpeed = 0.8;
+        let oliviSpeed = 0.5;
+        let score = 0;
+
+
+        let alex = new Image();
+        alex.src = "alexis.bmp";
+
+        let rayan = new Image();
+        rayan.src = "ryan.png";
+
+        let dieu = new Image();
+        dieu.src = "olivi.png";
+
+        class Alexis {
+            image = alex
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = 0;
+                this.sx = 60;
+                this.sy = 60;
+                this.aaron = false;
+            }
+
+            draw() {
+                context.drawImage(this.image, this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
+
+            }
+
+            update() {
+                this.y += alexisSpeed;
+                this.x += (joseph.x - this.x) / 700;
+                if (this.y >= height + this.sy) {
+                    this.aaron = true;
+                }
+            }
+
         }
-      }
-    }
-    class Vincent {
-      constructor(a, b) {
-        this.x = a;
-        this.y = b;
-        this.sx = 5;
-        this.sy = 10;
-        this.speed = bulletSpeed;
-        this.aaron = false;
-      }
-      draw() {
-        context.fillStyle = "rgb(158, 0, 255)";
-        context.fillRect(this.x - this.sx/2, this.y - this.sy/2, this.sx, this.sy);
-      }
-      update(){
-        this.y -= this.speed;
-        if (this.y < 0) {
-          this.aaron = true;
+        class Olivi extends Alexis {
+            image = dieu
+            constructor() {
+                super();
+            }
+            update() {
+                this.y += oliviSpeed;
+                if (this.y >= height + this.sy) {
+                    this.aaron = true;
+                }
+            }
+
         }
-      }
-      collide(alex){
-        if(!(this.x - this.sx/2 > alex.x + alex.sx/2 || this.y - this.sy/2 > alex.y + alex.sy || this.x + this.sx < alex.x - alex.sx/2 || this.y + this.sy < alex.y - alex.sy)){
-          alex.aaron = true;
+
+        class Vincent {
+            constructor(a, b) {
+                this.x = a;
+                this.y = b;
+                this.sx = 5;
+                this.sy = 10;
+                this.speed = bulletSpeed;
+                this.aaron = false;
+
+            }
+
+            draw() {
+                context.fillStyle = "#6174ee";
+                context.fillRect(this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
+            }
+            update() {
+                this.y -= this.speed;
+                if (this.y < 0) {
+                    this.aaron = true;
+                }
+            }
+            collide(alex, value) {
+                if (!(this.x - this.sx / 2 > alex.x + alex.sx / 2 ||
+                        this.y - this.sy / 2 > alex.y + alex.sy ||
+                        this.x + this.sx < alex.x - alex.sx / 2 ||
+                        this.y + this.sy < alex.y - alex.sy)) {
+                    alex.aaron = true;
+                    this.aaron = true;
+                    score += value;
+                }
+            }
         }
-      }
-    }
-    class Joseph {
-      constructor() {
-        this.x = width / 2;
-        this.sx = 90;
-        this.sy = 90;
-      }
-      draw() {
-        context.drawImage(rayan, this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);
-        /*context.fillStyle = "#6174ee";
-        context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);*/
-      }
-    }
-
-
-    function resize() {
-      width = window.innerWidth,
-        height = window.innerHeight,
-        ratio = window.devicePixelRatio;
-      canvas.width = width * ratio;
-      canvas.height = height * ratio;
-      canvas.style.width = width + "px";
-      canvas.style.height = height + "px";
-      context.scale(ratio, ratio);
-    }
-    window.onresize = function() {
-      resize();
-    };
-    window.onload = function() {
-      resize();
-      window.requestAnimationFrame(boucle);
-    }
-    document.addEventListener("keydown", (e) => {
-      if (e.repeat) return;
-      if (e.keyCode == 37) {
-        left = true;
-      } else if (e.keyCode == 39) {
-        right = true;
-      } else if (e.keyCode == 38) {
-        up = true;
-      }
-    }, false);
-    document.addEventListener('keyup', (e) => {
-      if (e.keyCode == 37) {
-        left = false;
-      } else if (e.keyCode == 39) {
-        right = false;
-      } else if (e.keyCode == 38) {
-        up = false;
-      }
-    })
-    joseph = new Joseph();
-    direc = 0;
-    vincents = [];
-    alexis = [new Alexis()];
-
-    let left = false;
-    let right = false;
-    let up = false;
-
-    let speed = 5;
-    let bulletSpeed = 8;
-    let alexisSpeed = 0.8;
-
-    let shoot = 0;
-
-    let alex = new Image();
-    alex.src = "alexis.bmp";
-
-    let rayan = new Image();
-    rayan.src = "ryan.png";
-
-    function boucle() {
-      context.clearRect(0, 0, width, height);
-      context.beginPath();
-      context.fillStyle = "black";
-      context.rect(0, 0, width, height);
-      context.fill();
-      context.closePath();
-
-      if (left){
-        joseph.x -= speed;
-      }
-      if (right){
-        joseph.x += speed;
-      }
-      if (up && shoot == 0) {
-        vincents.push(new Vincent(joseph.x, height - 50));
-        shoot = 10;
-      }
-      shoot = Math.max(0, shoot-1);
-
-      if (Math.random() > .99) {
-        alexis.push(new Alexis())
-      }
-      for (let alexi of alexis) {
-        alexi.draw();
-        alexi.update();
-      }
-      for (let vincent of vincents) {
-        vincent.draw();
-        vincent.update();
-        for (let alexi of alexis){
-          vincent.collide(alexi);
+        class Joseph {
+            constructor() {
+                this.x = width / 2;
+                this.sx = 90;
+                this.sy = 90;
+            }
+            draw() {
+                context.drawImage(rayan, this.x - this.sx / 2, height - 50 - this.sy / 2, this.sx, this.sy);
+                /*context.fillStyle = "#6174ee";
+                context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);*/
+            }
         }
-      }
-      joseph.draw();
-      joseph.x = ((joseph.x % width) + width) % width;
 
-      alexis = alexis.filter((el) => !el.aaron);
-      vincents = vincents.filter((el) => !el.aaron);
 
-      window.requestAnimationFrame(boucle);
-    }
-    boucle()
-  </script>
+        function resize() {
+            width = window.innerWidth,
+                height = window.innerHeight,
+                ratio = window.devicePixelRatio;
+            canvas.width = width * ratio;
+            canvas.height = height * ratio;
+            canvas.style.width = width + "px";
+            canvas.style.height = height + "px";
+            context.scale(ratio, ratio);
+        }
+
+        window.onresize = function() {
+            resize();
+        };
+
+        window.onload = function() {
+            resize();
+            window.requestAnimationFrame(boucle);
+        };
+
+        document.addEventListener("keydown", (e) => {
+            if (e.repeat) return;
+            if (e.keyCode == 37) {
+                left = true;
+            } else if (e.keyCode == 39) {
+                right = true;
+            } else if (e.keyCode == 38) {
+                up = true;
+            }
+        }, false);
+
+        document.addEventListener('keyup', (e) => {
+            if (e.keyCode == 37) {
+                left = false;
+            } else if (e.keyCode == 39) {
+                right = false;
+            } else if (e.keyCode == 38) {
+                up = false;
+            }
+        }, false);
+
+        let joseph = new Joseph();
+        let direc = 0;
+        let vincents = [];
+        let alexis = [];
+        let olivis = [];
+        let left = false;
+        let right = false;
+        let up = false;
+        let shoot = 0;
+
+
+        function boucle() {
+            context.clearRect(0, 0, width, height);
+            context.beginPath();
+            context.fillStyle = "black";
+            context.rect(0, 0, width, height);
+            context.fill();
+            context.closePath();
+
+            if (left) {
+                joseph.x -= speed;
+            }
+
+            if (right) {
+                joseph.x += speed;
+            }
+
+            if (up && shoot == 0) {
+                vincents.push(new Vincent(joseph.x, height - 50));
+                shoot = tps;
+            }
+            shoot = Math.max(0, shoot - 1);
+
+            if (Math.random() > .99) {
+                alexis.push(new Alexis())
+            }
+            if (Math.random() > .995) {
+                olivis.push(new Olivi())
+            }
+            for (let alexi of alexis) {
+                alexi.draw();
+                alexi.update();
+            }
+
+            for (let vincent of vincents) {
+                vincent.draw();
+                vincent.update();
+                for (let alexi of alexis) {
+                    vincent.collide(alexi, 1);
+                }
+            }
+            for (let olivi of olivis) {
+                olivi.draw();
+                olivi.update();
+                for (let vincent of vincents) {
+                    vincent.collide(olivi, -1);
+                }
+            }
+            joseph.draw();
+            joseph.x = ((joseph.x % width) + width) % width;
+
+            alexis = alexis.filter((el) => !el.aaron);
+            vincents = vincents.filter((el) => !el.aaron);
+            olivis = olivis.filter((el) => !el.aaron);
+
+            spanScore.innerHTML = score;
+            window.requestAnimationFrame(boucle);
+        }
+        boucle()
+    </script>
 </body>
 
 </html>
