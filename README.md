@@ -19,7 +19,7 @@ On voulait faire Alexis à partir de Alexis, chose plutôt aisé avec ce qu'on a
 If you want to use this program, make sure that all of the files are in 24bits BMP format.  
 
 ## Méfait #4 : L’arborescence de questions
- The méfait is comming...
+Une série de question ma foi fort honnête qui mène au plus grand cadeau
 
 ## Méfait #5 : Réponses au TP
 Fait des docx grâce à python-docx :
@@ -27,3 +27,6 @@ Fait des docx grâce à python-docx :
 
 ## Méfait #6 : Video propagandesque
 Génère une video remplie de symbole et messages cachée
+
+## Méfait #7 : SI invadeur
+Un jeu : un but : détruire Alexis Derail
