@@ -59,6 +59,7 @@
         const tps = 25; // nombre de frames entre chaque tir
         const speed = 5;
         const bulletSpeed = 8;
+        const force = 5;
         let alexisSpeed = 0.8;
         let oliviSpeed = 0.5;
 
@@ -166,7 +167,29 @@
                 context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);*/
             }
         }
-
+        class paillette {
+            constructor(a, b, angle = 3 * Math.PI / 2, ouverture = Math.PI / 8) {
+                this.x = a
+                this.y = b
+                this.angle = angle + ouverture * 2 * (0.5 - Math.random())
+                this.vec = [Math.cos(this.angle) * force, Math.sin(this.angle) * force]
+                this.coul = "white"
+                this.aaron = false
+            }
+            draw() {
+                this.vec[1] += 0.1
+                this.x += this.vec[0]
+                this.y += this.vec[1]
+                if (this.y > height) {
+                    this.aaron = true;
+                }
+                context.fillStyle = this.coul
+                context.beginPath()
+                context.arc(parseInt(this.x), parseInt(this.y), 5, 0, Math.PI * 2)
+                context.fill()
+                context.closePath()
+            }
+        }
 
         function resize() {
             width = window.innerWidth,
@@ -192,8 +215,10 @@
             if (e.repeat) return;
             if (e.keyCode == 37) {
                 left = true;
+
             } else if (e.keyCode == 39) {
                 right = true;
+
             } else if (e.keyCode == 38) {
                 up = true;
             }
@@ -220,6 +245,7 @@
         let shoot = 0;
         let score = 0;
         let vie = 3;
+        let confettis = [];
 
 
         function boucle() {
@@ -232,10 +258,12 @@
 
             if (left) {
                 joseph.x -= speed;
+                confettis.push(new paillette(joseph.x + joseph.sx / 2, height, Math.PI * 3 / 2, Math.PI / 16));
             }
 
             if (right) {
                 joseph.x += speed;
+                confettis.push(new paillette(joseph.x - joseph.sx / 2, height, -Math.PI / 2, Math.PI / 16));
             }
 
             if (up && shoot == 0) {
@@ -270,6 +298,11 @@
                     vincent.collide(alexi, 1);
                 }
             }
+            next = []
+            for (let confetti of confettis) {
+                confetti.draw();
+            }
+
 
             joseph.draw();
             joseph.x = ((joseph.x % width) + width) % width;
@@ -277,6 +310,7 @@
             alexis = alexis.filter((el) => !el.aaron);
             vincents = vincents.filter((el) => !el.aaron);
             olivis = olivis.filter((el) => !el.aaron);
+            confettis = confettis.filter((el) => !el.aaron);
 
             spanScore.innerHTML = score;
             spanVie.innerHTML = "💖".repeat(vie);
