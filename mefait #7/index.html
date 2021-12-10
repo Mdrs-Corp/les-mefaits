@@ -10,12 +10,12 @@
             top: 0;
             left: 0;
         }
-        
+
         html,
         body {
             margin: 0px;
         }
-        
+
         #score {
             position: absolute;
             top: 0px;
@@ -29,7 +29,7 @@
             font-weight: bold;
             z-index: 1;
         }
-        
+
         #vie {
             position: absolute;
             top: 0px;
@@ -59,12 +59,8 @@
         const tps = 25; // nombre de frames entre chaque tir
         const speed = 5;
         const bulletSpeed = 8;
-        const force = 5;
-        let alexisSpeed = 0.8;
-        let oliviSpeed = 0.5;
-
-
-
+        const alexisSpeed = 0.8;
+        const oliviSpeed = 0.5;
 
         let alex = new Image();
         alex.src = "alexis.bmp";
@@ -99,9 +95,9 @@
             }
             collide(mdrsman) {
                 if (!(this.x - this.sx / 2 > mdrsman.x + mdrsman.sx / 2 ||
-                        this.y - this.sy / 2 > mdrsman.y + mdrsman.sy ||
-                        this.x + this.sx < mdrsman.x - mdrsman.sx / 2 ||
-                        this.y + this.sy < mdrsman.y - mdrsman.sy)) {
+                        this.y - this.sy / 2 > mdrsman.y + mdrsman.sy / 2 ||
+                        this.x + this.sx / 2 < mdrsman.x - mdrsman.sx / 2 ||
+                        this.y + this.sy / 2 < mdrsman.y - mdrsman.sy / 2)) {
                     this.aaron = true;
                     vie--;
                 }
@@ -145,9 +141,9 @@
             }
             collide(alex, value) {
                 if (!(this.x - this.sx / 2 > alex.x + alex.sx / 2 ||
-                        this.y - this.sy / 2 > alex.y + alex.sy ||
-                        this.x + this.sx < alex.x - alex.sx / 2 ||
-                        this.y + this.sy < alex.y - alex.sy)) {
+                        this.y - this.sy / 2 > alex.y + alex.sy / 2 ||
+                        this.x + this.sx / 2 < alex.x - alex.sx / 2 ||
+                        this.y + this.sy / 2 < alex.y - alex.sy / 2)) {
                     alex.aaron = true;
                     this.aaron = true;
                     score += value;
@@ -168,12 +164,13 @@
             }
         }
         class paillette {
-            constructor(a, b, angle = 3 * Math.PI / 2, ouverture = Math.PI / 8) {
+            constructor(a, b, angle = 0, ouverture = Math.PI*2) {
                 this.x = a
                 this.y = b
-                this.angle = angle + ouverture * 2 * (0.5 - Math.random())
-                this.vec = [Math.cos(this.angle) * force, Math.sin(this.angle) * force]
-                this.coul = "white"
+                this.angle = angle + ouverture * (Math.random() * 2 -1)
+                this.forse = Math.random()*2+1;
+                this.vec = [Math.cos(this.angle) * this.forse, Math.sin(this.angle) * this.forse]
+                this.coul = "rgb(193, 193, 193)"
                 this.aaron = false
             }
             draw() {
