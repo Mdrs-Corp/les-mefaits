@@ -81,6 +81,7 @@
         this.sy = sy;
         this.aaron = false;
         this.image = image;
+        this.collision = [];
       }
 
       draw() {
@@ -90,7 +91,7 @@
       update() {
         this.x += this.vx;
         this.y += this.vy;
-        if (this.y + this.sy / 2 >= height || this.y + this.sx / 2 <= 0) {
+        if (this.y - this.sy / 2 >= height || this.y + this.sx / 2 <= 0) {
           this.aaron = true;
         }
       }
@@ -108,6 +109,7 @@
       constructor() {
         super(Math.random() * width, 0, 60, 60, alex)
         this.vy = alexisSpeed;
+        this.collision = [Joseph];
       }
 
       update() {
@@ -138,32 +140,41 @@
       constructor(x, y) {
         super(x, y, 5, 10, null);
         this.vy = -bulletSpeed;
-
+        this.collision = [Alexis, Olivi];
       }
 
       draw() {
         context.fillStyle = "#6174ee";
         context.fillRect(this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
       }
-      collide(alex, value) {
+      collide(alex) {
         super.collide(alex, (yes, no) => {
           yes.aaron = true;
           no.aaron = true;
-          score += value;
+          if (no instanceof Alexis){
+            score += 1;
+          }else{
+            score -= 1;
+          }
         })
       }
     }
-    class Joseph {
+    class Joseph extends Entity {
       constructor() {
-        this.x = width / 2;
-        this.y = height - 50;
-        this.sx = 90;
-        this.sy = 90;
+        super(width / 2, height - 50, 90, 90, rayan);
       }
-      draw() {
-        context.drawImage(rayan, this.x - this.sx / 2, height - 50 - this.sy / 2, this.sx, this.sy);
-        /*context.fillStyle = "#6174ee";
-        context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);*/
+      update(){
+        if (left) {
+          this.vx -= 1;
+          entities.push(new paillette(joseph.x + joseph.sx / 2, height, Math.PI * 3 / 2, Math.PI / 16));
+        }
+        if (right) {
+          this.vx += 1;
+          entities.push(new paillette(joseph.x - joseph.sx / 2, height, -Math.PI / 2, Math.PI / 16));
+        }
+        this.vx *= 0.8;
+        super.update();
+        this.x = ((this.x % width) + width) % width;
       }
     }
     class paillette extends Entity {
@@ -211,39 +222,36 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.repeat) return;
-      if (e.keyCode == 37) {
+      if (e.keyCode == 37 || e.keyCode == 81) {
         left = true;
 
-      } else if (e.keyCode == 39) {
+      } else if (e.keyCode == 39 || e.keyCode == 68) {
         right = true;
 
-      } else if (e.keyCode == 38) {
+      } else if (e.keyCode == 38 || e.keyCode == 90) {
         up = true;
       }
     }, false);
 
     document.addEventListener('keyup', (e) => {
-      if (e.keyCode == 37) {
+      if (e.keyCode == 37 || e.keyCode == 81) {
         left = false;
-      } else if (e.keyCode == 39) {
+      } else if (e.keyCode == 39 || e.keyCode == 68) {
         right = false;
-      } else if (e.keyCode == 38) {
+      } else if (e.keyCode == 38 || e.keyCode == 90) {
         up = false;
       }
     }, false);
 
     let joseph = new Joseph();
     let direc = 0;
-    let vincents = [];
-    let alexis = [];
-    let olivis = [];
+    let entities = [joseph];
     let left = false;
     let right = false;
     let up = false;
     let shoot = 0;
     let score = 0;
     let vie = 3;
-    let confettis = [];
 
 
     function boucle() {
@@ -254,62 +262,34 @@
       context.fill();
       context.closePath();
 
-      if (left) {
-        joseph.x -= speed;
-        confettis.push(new paillette(joseph.x + joseph.sx / 2, height, Math.PI * 3 / 2, Math.PI / 16));
-      }
-
-      if (right) {
-        joseph.x += speed;
-        confettis.push(new paillette(joseph.x - joseph.sx / 2, height, -Math.PI / 2, Math.PI / 16));
-      }
 
       if (up && shoot == 0) {
-        vincents.push(new Vincent(joseph.x, height - 50));
+        entities.push(new Vincent(joseph.x, height - 50));
         shoot = tps;
       }
       shoot = Math.max(0, shoot - 1);
 
       if (Math.random() > .99) {
-        alexis.push(new Alexis())
+        entities.push(new Alexis())
       }
       if (Math.random() > .995) {
-        olivis.push(new Olivi())
+        entities.push(new Olivi())
       }
-      for (let olivi of olivis) {
-        olivi.draw();
-        olivi.update();
-        for (let vincent of vincents) {
-          vincent.collide(olivi, -1);
+
+      for (const entity of entities){
+        entity.update();
+        entity.draw();
+        if (entity.collide.length != 0) {
+          for (const otherEntity of entities){
+            for (type of entity.collision){
+              if (otherEntity instanceof type) {
+                entity.collide(otherEntity);
+              }
+            }
+          }
         }
       }
-      for (let alexi of alexis) {
-        alexi.draw();
-        alexi.update();
-        alexi.collide(joseph);
-      }
-
-      for (let vincent of vincents) {
-        vincent.draw();
-        vincent.update();
-        for (let alexi of alexis) {
-          vincent.collide(alexi, 1);
-        }
-      }
-      next = []
-      for (let confetti of confettis) {
-        confetti.update();
-        confetti.draw();
-      }
-
-
-      joseph.draw();
-      joseph.x = ((joseph.x % width) + width) % width;
-
-      alexis = alexis.filter((el) => !el.aaron);
-      vincents = vincents.filter((el) => !el.aaron);
-      olivis = olivis.filter((el) => !el.aaron);
-      confettis = confettis.filter((el) => !el.aaron);
+      entities = entities.filter((entity) => !entity.aaron);
 
       spanScore.innerHTML = score;
       spanVie.innerHTML = "💖".repeat(vie);
