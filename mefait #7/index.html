@@ -2,321 +2,321 @@
 <html>
 
 <head>
-    <title>SI Invadeur 🤌</title>
-    <style type="text/css">
-        canvas {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
+  <title>SI Invadeur 🤌</title>
+  <style type="text/css">
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
 
-        html,
-        body {
-            margin: 0px;
-        }
+    html,
+    body {
+      margin: 0px;
+    }
 
-        #score {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            color: white;
-            font-size: 50px;
-            text-align: center;
-            font-family: consolas;
-            font-weight: bold;
-            z-index: 1;
-        }
+    #score {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      color: white;
+      font-size: 50px;
+      text-align: center;
+      font-family: consolas;
+      font-weight: bold;
+      z-index: 1;
+    }
 
-        #vie {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            color: white;
-            font-size: 50px;
-            z-index: 1;
-        }
-    </style>
+    #vie {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      color: white;
+      font-size: 50px;
+      z-index: 1;
+    }
+  </style>
 </head>
 
 <body>
-    <canvas id="game"></canvas>
-    <p><span id="score">0</span></p>
-    <p><span id="vie">🫀🫀🫀</span></p>
-    <script type='text/javascript'>
-        console.log(1 == "1"); // Don't touch it
+  <canvas id="game"></canvas>
+  <p><span id="score">0</span></p>
+  <p><span id="vie">🫀🫀🫀</span></p>
+  <script type='text/javascript'>
+    console.log(1 == "1"); // Don't touch it
 
-        const canvas = document.getElementById("game");
-        const context = canvas.getContext("2d");
-        const spanScore = document.getElementById("score");
-        const spanVie = document.getElementById("vie");
-        var width = window.innerWidth;
-        var height = window.innerHeight;
-        const tps = 25; // nombre de frames entre chaque tir
-        const speed = 5;
-        const bulletSpeed = 8;
-        const alexisSpeed = 0.8;
-        const oliviSpeed = 0.5;
+    const canvas = document.getElementById("game");
+    const context = canvas.getContext("2d");
+    const spanScore = document.getElementById("score");
+    const spanVie = document.getElementById("vie");
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    const tps = 25; // nombre de frames entre chaque tir
+    const speed = 5;
+    const bulletSpeed = 8;
+    const alexisSpeed = 0.8;
+    const oliviSpeed = 0.5;
 
-        let alex = new Image();
-        alex.src = "alexis.bmp";
+    let alex = new Image();
+    alex.src = "alexis.bmp";
 
-        let rayan = new Image();
-        rayan.src = "ryan.png";
+    let rayan = new Image();
+    rayan.src = "ryan.png";
 
-        let dieu = new Image();
-        dieu.src = "olivi.png";
+    let dieu = new Image();
+    dieu.src = "olivi.png";
 
-        class Entity {
-          constructor(x, y, sx, sy, image){
-            this.x = x;
-            this.y = y;
-            this.vx = 0;
-            this.vy = 0;
-            this.sx = sx;
-            this.sy = sy;
-            this.aaron = false;
-            this.image = image;
-          }
+    class Entity {
+      constructor(x, y, sx, sy, image) {
+        this.x = x;
+        this.y = y;
+        this.vx = 0;
+        this.vy = 0;
+        this.sx = sx;
+        this.sy = sy;
+        this.aaron = false;
+        this.image = image;
+      }
 
-          draw(){
-            context.drawImage(this.image, this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
-          }
+      draw() {
+        context.drawImage(this.image, this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
+      }
 
-          update() {
-              this.x += this.vx;
-              this.y += this.vy;
-              if (this.y + this.sy / 2 >= height || this.y + this.sx / 2 <= 0) {
-                  this.aaron = true;
-              }
-          }
-          collide(mdrsman, truc){
-            if (!(this.x - this.sx / 2 > mdrsman.x + mdrsman.sx / 2 ||
-                    this.y - this.sy / 2 > mdrsman.y + mdrsman.sy / 2 ||
-                    this.x + this.sx / 2 < mdrsman.x - mdrsman.sx / 2 ||
-                    this.y + this.sy / 2 < mdrsman.y - mdrsman.sy / 2)) {
-                truc(this, mdrsman);
-            }
-          }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.y + this.sy / 2 >= height || this.y + this.sx / 2 <= 0) {
+          this.aaron = true;
         }
-
-        class Alexis extends Entity {
-            constructor() {
-              super(Math.random() * width, 0, 60, 60, alex)
-              this.vy = alexisSpeed;
-            }
-
-            update() {
-                this.vx = (joseph.x - this.x) / 700
-                super.update();
-            }
-            collide(mdrsman) {
-              super.collide(mdrsman, (yes, no)=>{
-                yes.aaron = true;
-                vie --;
-              })
-            }
+      }
+      collide(mdrsman, truc) {
+        if (!(this.x - this.sx / 2 > mdrsman.x + mdrsman.sx / 2 ||
+            this.y - this.sy / 2 > mdrsman.y + mdrsman.sy / 2 ||
+            this.x + this.sx / 2 < mdrsman.x - mdrsman.sx / 2 ||
+            this.y + this.sy / 2 < mdrsman.y - mdrsman.sy / 2)) {
+          truc(this, mdrsman);
         }
-        class Olivi extends Entity {
-            constructor() {
-              super(Math.random() * width, 0, 60, 60, dieu);
-            }
-            update() {
-                this.y += oliviSpeed;
-                if (this.y >= height + this.sy) {
-                    this.aaron = true;
-                }
-            }
+      }
+    }
 
+    class Alexis extends Entity {
+      constructor() {
+        super(Math.random() * width, 0, 60, 60, alex)
+        this.vy = alexisSpeed;
+      }
+
+      update() {
+        this.vx = (joseph.x - this.x) / 700
+        super.update();
+      }
+      collide(mdrsman) {
+        super.collide(mdrsman, (yes, no) => {
+          yes.aaron = true;
+          vie--;
+        })
+      }
+    }
+    class Olivi extends Entity {
+      constructor() {
+        super(Math.random() * width, 0, 60, 60, dieu);
+      }
+      update() {
+        this.y += oliviSpeed;
+        if (this.y >= height + this.sy) {
+          this.aaron = true;
         }
+      }
 
-        class Vincent extends Entity{
-            constructor(x, y) {
-              super(x, y, 5, 10, null);
-              this.vy = -bulletSpeed;
+    }
 
-            }
+    class Vincent extends Entity {
+      constructor(x, y) {
+        super(x, y, 5, 10, null);
+        this.vy = -bulletSpeed;
 
-            draw() {
-                context.fillStyle = "#6174ee";
-                context.fillRect(this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
-            }
-            collide(alex, value) {
-              super.collide(alex, (yes, no)=>{
-                yes.aaron = true;
-                no.aaron = true;
-                score += value;
-              })
-            }
+      }
+
+      draw() {
+        context.fillStyle = "#6174ee";
+        context.fillRect(this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
+      }
+      collide(alex, value) {
+        super.collide(alex, (yes, no) => {
+          yes.aaron = true;
+          no.aaron = true;
+          score += value;
+        })
+      }
+    }
+    class Joseph {
+      constructor() {
+        this.x = width / 2;
+        this.y = height - 50;
+        this.sx = 90;
+        this.sy = 90;
+      }
+      draw() {
+        context.drawImage(rayan, this.x - this.sx / 2, height - 50 - this.sy / 2, this.sx, this.sy);
+        /*context.fillStyle = "#6174ee";
+        context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);*/
+      }
+    }
+    class paillette extends Entity {
+      constructor(x, y, angle = 0, ouverture = Math.PI * 2) {
+        super(x, y, 10, null, null);
+        this.angle = angle + ouverture * (Math.random() * 2 - 1);
+        this.forse = Math.random() * 2 + 1;
+        this.vx = Math.cos(this.angle) * this.forse;
+        this.vy = Math.sin(this.angle) * this.forse;
+        this.color = "rgb(255, 255, 255)";
+      }
+      update() {
+        super.update();
+        this.vy += .1;
+      }
+
+      draw() {
+        context.fillStyle = this.color;
+        context.beginPath();
+        context.arc(this.x, this.y, 5, 0, Math.PI * 2);
+        context.fill();
+        context.closePath();
+      }
+    }
+
+    function resize() {
+      width = window.innerWidth,
+        height = window.innerHeight,
+        ratio = window.devicePixelRatio;
+      canvas.width = width * ratio;
+      canvas.height = height * ratio;
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      context.scale(ratio, ratio);
+    }
+
+    window.onresize = function() {
+      resize();
+    };
+
+    window.onload = function() {
+      resize();
+      window.requestAnimationFrame(boucle);
+    };
+
+    document.addEventListener("keydown", (e) => {
+      if (e.repeat) return;
+      if (e.keyCode == 37) {
+        left = true;
+
+      } else if (e.keyCode == 39) {
+        right = true;
+
+      } else if (e.keyCode == 38) {
+        up = true;
+      }
+    }, false);
+
+    document.addEventListener('keyup', (e) => {
+      if (e.keyCode == 37) {
+        left = false;
+      } else if (e.keyCode == 39) {
+        right = false;
+      } else if (e.keyCode == 38) {
+        up = false;
+      }
+    }, false);
+
+    let joseph = new Joseph();
+    let direc = 0;
+    let vincents = [];
+    let alexis = [];
+    let olivis = [];
+    let left = false;
+    let right = false;
+    let up = false;
+    let shoot = 0;
+    let score = 0;
+    let vie = 3;
+    let confettis = [];
+
+
+    function boucle() {
+      context.clearRect(0, 0, width, height);
+      context.beginPath();
+      context.fillStyle = "black";
+      context.rect(0, 0, width, height);
+      context.fill();
+      context.closePath();
+
+      if (left) {
+        joseph.x -= speed;
+        confettis.push(new paillette(joseph.x + joseph.sx / 2, height, Math.PI * 3 / 2, Math.PI / 16));
+      }
+
+      if (right) {
+        joseph.x += speed;
+        confettis.push(new paillette(joseph.x - joseph.sx / 2, height, -Math.PI / 2, Math.PI / 16));
+      }
+
+      if (up && shoot == 0) {
+        vincents.push(new Vincent(joseph.x, height - 50));
+        shoot = tps;
+      }
+      shoot = Math.max(0, shoot - 1);
+
+      if (Math.random() > .99) {
+        alexis.push(new Alexis())
+      }
+      if (Math.random() > .995) {
+        olivis.push(new Olivi())
+      }
+      for (let olivi of olivis) {
+        olivi.draw();
+        olivi.update();
+        for (let vincent of vincents) {
+          vincent.collide(olivi, -1);
         }
-        class Joseph {
-            constructor() {
-                this.x = width / 2;
-                this.y = height - 50;
-                this.sx = 90;
-                this.sy = 90;
-            }
-            draw() {
-                context.drawImage(rayan, this.x - this.sx / 2, height - 50 - this.sy / 2, this.sx, this.sy);
-                /*context.fillStyle = "#6174ee";
-                context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);*/
-            }
+      }
+      for (let alexi of alexis) {
+        alexi.draw();
+        alexi.update();
+        alexi.collide(joseph);
+      }
+
+      for (let vincent of vincents) {
+        vincent.draw();
+        vincent.update();
+        for (let alexi of alexis) {
+          vincent.collide(alexi, 1);
         }
-        class paillette extends Entity{
-            constructor(x, y, angle = 0, ouverture = Math.PI*2) {
-              super(x, y, 10, null, null);
-              this.angle = angle + ouverture * (Math.random() * 2 -1);
-              this.forse = Math.random()*2+1;
-              this.vx = Math.cos(this.angle) * this.forse;
-              this.vy = Math.sin(this.angle) * this.forse;
-              this.color = "rgb(255, 255, 255)";
-            }
-            update(){
-              super.update();
-              this.vy += .1;
-            }
-
-            draw() {
-                context.fillStyle = this.color;
-                context.beginPath();
-                context.arc(this.x, this.y, 5, 0, Math.PI * 2);
-                context.fill();
-                context.closePath();
-            }
-        }
-
-        function resize() {
-            width = window.innerWidth,
-                height = window.innerHeight,
-                ratio = window.devicePixelRatio;
-            canvas.width = width * ratio;
-            canvas.height = height * ratio;
-            canvas.style.width = width + "px";
-            canvas.style.height = height + "px";
-            context.scale(ratio, ratio);
-        }
-
-        window.onresize = function() {
-            resize();
-        };
-
-        window.onload = function() {
-            resize();
-            window.requestAnimationFrame(boucle);
-        };
-
-        document.addEventListener("keydown", (e) => {
-            if (e.repeat) return;
-            if (e.keyCode == 37) {
-                left = true;
-
-            } else if (e.keyCode == 39) {
-                right = true;
-
-            } else if (e.keyCode == 38) {
-                up = true;
-            }
-        }, false);
-
-        document.addEventListener('keyup', (e) => {
-            if (e.keyCode == 37) {
-                left = false;
-            } else if (e.keyCode == 39) {
-                right = false;
-            } else if (e.keyCode == 38) {
-                up = false;
-            }
-        }, false);
-
-        let joseph = new Joseph();
-        let direc = 0;
-        let vincents = [];
-        let alexis = [];
-        let olivis = [];
-        let left = false;
-        let right = false;
-        let up = false;
-        let shoot = 0;
-        let score = 0;
-        let vie = 3;
-        let confettis = [];
+      }
+      next = []
+      for (let confetti of confettis) {
+        confetti.update();
+        confetti.draw();
+      }
 
 
-        function boucle() {
-            context.clearRect(0, 0, width, height);
-            context.beginPath();
-            context.fillStyle = "black";
-            context.rect(0, 0, width, height);
-            context.fill();
-            context.closePath();
+      joseph.draw();
+      joseph.x = ((joseph.x % width) + width) % width;
 
-            if (left) {
-                joseph.x -= speed;
-                confettis.push(new paillette(joseph.x + joseph.sx / 2, height, Math.PI * 3 / 2, Math.PI / 16));
-            }
+      alexis = alexis.filter((el) => !el.aaron);
+      vincents = vincents.filter((el) => !el.aaron);
+      olivis = olivis.filter((el) => !el.aaron);
+      confettis = confettis.filter((el) => !el.aaron);
 
-            if (right) {
-                joseph.x += speed;
-                confettis.push(new paillette(joseph.x - joseph.sx / 2, height, -Math.PI / 2, Math.PI / 16));
-            }
-
-            if (up && shoot == 0) {
-                vincents.push(new Vincent(joseph.x, height - 50));
-                shoot = tps;
-            }
-            shoot = Math.max(0, shoot - 1);
-
-            if (Math.random() > .99) {
-                alexis.push(new Alexis())
-            }
-            if (Math.random() > .995) {
-                olivis.push(new Olivi())
-            }
-            for (let olivi of olivis) {
-                olivi.draw();
-                olivi.update();
-                for (let vincent of vincents) {
-                    vincent.collide(olivi, -1);
-                }
-            }
-            for (let alexi of alexis) {
-                alexi.draw();
-                alexi.update();
-                alexi.collide(joseph);
-            }
-
-            for (let vincent of vincents) {
-                vincent.draw();
-                vincent.update();
-                for (let alexi of alexis) {
-                    vincent.collide(alexi, 1);
-                }
-            }
-            next = []
-            for (let confetti of confettis) {
-              confetti.update();
-                confetti.draw();
-            }
-
-
-            joseph.draw();
-            joseph.x = ((joseph.x % width) + width) % width;
-
-            alexis = alexis.filter((el) => !el.aaron);
-            vincents = vincents.filter((el) => !el.aaron);
-            olivis = olivis.filter((el) => !el.aaron);
-            confettis = confettis.filter((el) => !el.aaron);
-
-            spanScore.innerHTML = score;
-            spanVie.innerHTML = "💖".repeat(vie);
-            window.requestAnimationFrame(boucle);
-        }
-        boucle()
-    </script>
+      spanScore.innerHTML = score;
+      spanVie.innerHTML = "💖".repeat(vie);
+      window.requestAnimationFrame(boucle);
+    }
+    boucle()
+  </script>
 </body>
 
 </html>
