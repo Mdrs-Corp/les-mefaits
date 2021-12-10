@@ -71,43 +71,59 @@
         let dieu = new Image();
         dieu.src = "olivi.png";
 
-        class Alexis {
-            image = alex
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = 0;
-                this.sx = 60;
-                this.sy = 60;
-                this.aaron = false;
+        class Entity {
+          constructor(x, y, sx, sy, image){
+            this.x = x;
+            this.y = y;
+            this.vx = 0;
+            this.vy = 0;
+            this.sx = sx;
+            this.sy = sy;
+            this.aaron = false;
+            this.image = image;
+          }
+
+          draw(){
+            context.drawImage(this.image, this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
+          }
+
+          update() {
+              this.x += this.vx;
+              this.y += this.vy;
+              if (this.y + this.sy / 2 >= height || this.y + this.sx / 2 <= 0) {
+                  this.aaron = true;
+              }
+          }
+          collide(mdrsman, truc){
+            if (!(this.x - this.sx / 2 > mdrsman.x + mdrsman.sx / 2 ||
+                    this.y - this.sy / 2 > mdrsman.y + mdrsman.sy / 2 ||
+                    this.x + this.sx / 2 < mdrsman.x - mdrsman.sx / 2 ||
+                    this.y + this.sy / 2 < mdrsman.y - mdrsman.sy / 2)) {
+                truc(this, mdrsman);
             }
+          }
+        }
 
-            draw() {
-                context.drawImage(this.image, this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
-
+        class Alexis extends Entity {
+            constructor() {
+              super(Math.random() * width, 0, 60, 60, alex)
+              this.vy = alexisSpeed;
             }
 
             update() {
-                this.y += alexisSpeed;
-                this.x += (joseph.x - this.x) / 700;
-                if (this.y >= height + this.sy) {
-                    this.aaron = true;
-                }
+                this.vx = (joseph.x - this.x) / 700
+                super.update();
             }
             collide(mdrsman) {
-                if (!(this.x - this.sx / 2 > mdrsman.x + mdrsman.sx / 2 ||
-                        this.y - this.sy / 2 > mdrsman.y + mdrsman.sy / 2 ||
-                        this.x + this.sx / 2 < mdrsman.x - mdrsman.sx / 2 ||
-                        this.y + this.sy / 2 < mdrsman.y - mdrsman.sy / 2)) {
-                    this.aaron = true;
-                    vie--;
-                }
+              super.collide(mdrsman, (yes, no)=>{
+                yes.aaron = true;
+                vie --;
+              })
             }
-
         }
-        class Olivi extends Alexis {
-            image = dieu
+        class Olivi extends Entity {
             constructor() {
-                super();
+              super(Math.random() * width, 0, 60, 60, dieu);
             }
             update() {
                 this.y += oliviSpeed;
@@ -118,14 +134,10 @@
 
         }
 
-        class Vincent {
-            constructor(a, b) {
-                this.x = a;
-                this.y = b;
-                this.sx = 5;
-                this.sy = 10;
-                this.speed = bulletSpeed;
-                this.aaron = false;
+        class Vincent extends Entity{
+            constructor(x, y) {
+              super(x, y, 5, 10, null);
+              this.vy = -bulletSpeed;
 
             }
 
@@ -133,21 +145,12 @@
                 context.fillStyle = "#6174ee";
                 context.fillRect(this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
             }
-            update() {
-                this.y -= this.speed;
-                if (this.y < 0) {
-                    this.aaron = true;
-                }
-            }
             collide(alex, value) {
-                if (!(this.x - this.sx / 2 > alex.x + alex.sx / 2 ||
-                        this.y - this.sy / 2 > alex.y + alex.sy / 2 ||
-                        this.x + this.sx / 2 < alex.x - alex.sx / 2 ||
-                        this.y + this.sy / 2 < alex.y - alex.sy / 2)) {
-                    alex.aaron = true;
-                    this.aaron = true;
-                    score += value;
-                }
+              super.collide(alex, (yes, no)=>{
+                yes.aaron = true;
+                no.aaron = true;
+                score += value;
+              })
             }
         }
         class Joseph {
@@ -163,28 +166,26 @@
                 context.fillRect(this.x - this.sx/2, height - 50 - this.sy/2, this.sx, this.sy);*/
             }
         }
-        class paillette {
-            constructor(a, b, angle = 0, ouverture = Math.PI*2) {
-                this.x = a
-                this.y = b
-                this.angle = angle + ouverture * (Math.random() * 2 -1)
-                this.forse = Math.random()*2+1;
-                this.vec = [Math.cos(this.angle) * this.forse, Math.sin(this.angle) * this.forse]
-                this.coul = "rgb(193, 193, 193)"
-                this.aaron = false
+        class paillette extends Entity{
+            constructor(x, y, angle = 0, ouverture = Math.PI*2) {
+              super(x, y, 10, null, null);
+              this.angle = angle + ouverture * (Math.random() * 2 -1);
+              this.forse = Math.random()*2+1;
+              this.vx = Math.cos(this.angle) * this.forse;
+              this.vy = Math.sin(this.angle) * this.forse;
+              this.color = "rgb(255, 255, 255)";
             }
+            update(){
+              super.update();
+              this.vy += .1;
+            }
+
             draw() {
-                this.vec[1] += 0.1
-                this.x += this.vec[0]
-                this.y += this.vec[1]
-                if (this.y > height) {
-                    this.aaron = true;
-                }
-                context.fillStyle = this.coul
-                context.beginPath()
-                context.arc(parseInt(this.x), parseInt(this.y), 5, 0, Math.PI * 2)
-                context.fill()
-                context.closePath()
+                context.fillStyle = this.color;
+                context.beginPath();
+                context.arc(this.x, this.y, 5, 0, Math.PI * 2);
+                context.fill();
+                context.closePath();
             }
         }
 
@@ -297,6 +298,7 @@
             }
             next = []
             for (let confetti of confettis) {
+              confetti.update();
                 confetti.draw();
             }
 
