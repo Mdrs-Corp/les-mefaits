@@ -6,11 +6,11 @@ const spanScore = document.getElementById("score");
 const spanVie = document.getElementById("vie");
 var width = window.innerWidth;
 var height = window.innerHeight;
-const tps = 25; // nombre de frames entre chaque tir
-const speed = 5;
-const bulletSpeed = 8;
-const alexisSpeed = 0.8;
-const oliviSpeed = 0.5;
+const tps = 12; // nombre de frames entre chaque tir
+const speed = 10;
+const bulletSpeed = 16;
+const alexisSpeed = 1.6;
+const oliviSpeed = 1;
 let zic = new Audio("le-sanglier-qui-court-instrumentale.ogg");
 let alex = new Image();
 alex.src = "alexis.bmp";
@@ -220,12 +220,12 @@ class Joseph extends Entity {
     }
     update() {
         if (left) {
-            this.vx -= 1;
+            this.vx -= 2;
             entities.push(new paillette(joseph.x + joseph.sx / 2, height, Math.PI * 3 / 2, Math.PI / 16));
             this.image = rayan;
         }
         if (right) {
-            this.vx += 1;
+            this.vx += 2;
             entities.push(new paillette(joseph.x - joseph.sx / 2, height, -Math.PI / 2, Math.PI / 16));
             this.image = nayar;
         }
@@ -239,13 +239,13 @@ class paillette extends Entity {
     constructor(x, y, angle = 0, ouverture = Math.PI * 2) {
         super(x, y, 10, null, null);
         this.angle = angle + ouverture * (Math.random() * 2 - 1);
-        this.forse = Math.random() * 2 + 1;
+        this.forse = Math.random() * 4 + 2;
         this.vx = Math.cos(this.angle) * this.forse;
         this.vy = Math.sin(this.angle) * this.forse;
         this.color = "rgb(255, 255, 255)";
     }
     update() {
-        this.vy += .1;
+        this.vy += .2;
         super.update();
     }
 
@@ -263,15 +263,15 @@ class mor extends Entity {
     constructor(x, y) {
         super(x, y, 10, null, null);
         this.angle = Math.random() * Math.PI * 2;
-        this.forse = Math.random() * 2 + 1;
+        this.forse = Math.random() * 4 + 2;
         this.vx = Math.cos(this.angle) * this.forse;
         this.vy = Math.sin(this.angle) * this.forse;
         this.color = "rgb(247, 255, 106)";
         this.alpha = 1;
     }
     update() {
-        this.vy += .1;
-        this.alpha -= 0.02;
+        this.vy += .2;
+        this.alpha -= 0.04;
         if (this.alpha <= 0) {
             this.aaron = true;
         }
@@ -306,7 +306,7 @@ window.onresize = function() {
 
 window.onload = function() {
     resize();
-    window.requestAnimationFrame(boucle);
+    //window.requestAnimationFrame(boucle);
 };
 
 document.addEventListener("keydown", (e) => {
