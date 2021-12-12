@@ -103,8 +103,8 @@ class MegaAlexis extends Entity {
     constructor() {
         super(Math.random() * width, 0, 230, 100, megalex)
         this.vy = alexisSpeed;
-        this.dir = 1.5;
-        this.time = 150;
+        this.dir = 3;
+        this.time = 70;
         this.ctime = 0;
         this.life = 6;
         this.collision = [Vincent];
@@ -194,8 +194,8 @@ class VincentCaniballe extends Entity {
     constructor(x, y, px, py) {
         super(x, y, 50, 50, sldwks);
         let dist = Math.sqrt(Math.pow(px - x, 2) + Math.pow(py - y, 2));
-        this.vx = 2 * (px - x) / dist;
-        this.vy = 2 * (py - y) / dist;
+        this.vx = 3 * (px - x) / dist;
+        this.vy = 3 * (py - y) / dist;
         this.collision = [Joseph];
     }
 
@@ -381,10 +381,10 @@ function boucle() {
     }
     shoot = Math.max(0, shoot - 1);
 
-    if (Math.random() > .99) {
+    if (Math.random() > .98) {
         entities.push(new Alexis())
     }
-    if (Math.random() > .995) {
+    if (Math.random() > .99) {
         entities.push(new Olivi())
     }
 
