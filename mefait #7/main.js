@@ -19,13 +19,29 @@ let megalex = new Image();
 megalex.src = "megaalexis.bmp";
 
 let rayan = new Image();
-rayan.src = "ryan.png";
-
+let nayar = new Image();
 let dieu = new Image();
 dieu.src = "olivi-sec.png";
 
 let sldwks = new Image();
 sldwks.src = "sldwks.jpg";
+
+selection = 0;
+img = document.getElementById("img");
+img.src = selection + ".png";
+
+function droite() {
+    selection += 1;
+    selection = selection % 4;
+    img.src = selection + ".png";
+}
+
+function gauche() {
+    selection -= 1;
+    if (selection < 0)
+        selection = 3;
+    img.src = selection + ".png";
+}
 
 class Entity {
     constructor(x, y, sx, sy, image) {
@@ -122,6 +138,7 @@ class MegaAlexis extends Entity {
                 for (let i = 0; i < 100; i++) {
                     entities.push(new mor(no.x, no.y));
                 }
+                boss = false;
             }
         })
     }
@@ -205,10 +222,12 @@ class Joseph extends Entity {
         if (left) {
             this.vx -= 1;
             entities.push(new paillette(joseph.x + joseph.sx / 2, height, Math.PI * 3 / 2, Math.PI / 16));
+            this.image = rayan;
         }
         if (right) {
             this.vx += 1;
             entities.push(new paillette(joseph.x - joseph.sx / 2, height, -Math.PI / 2, Math.PI / 16));
+            this.image = nayar;
         }
         this.vx *= 0.8;
         super.update();
@@ -370,6 +389,25 @@ function boucle() {
 }
 
 function start() {
+    rayan.onload = function() {
+        try {
+            // essayer de renverser verticalement RAYAN
+            let c = document.createElement('canvas');
+            c.width = rayan.width;
+            c.height = rayan.height;
+            let ctx = c.getContext('2d');
+            ctx.scale(-1, 1);
+            ctx.drawImage(rayan, -rayan.width, 0);
+            rayan.onload = undefined;
+            nayar.src = c.toDataURL();
+            delete c, ctx;
+        } catch (e) {
+            console.log(e);
+            nayar.src = rayan.src;
+        }
+
+    }
+    rayan.src = selection + ".png";
 
     zic.play();
     document.getElementById("menu").style.display = "none";

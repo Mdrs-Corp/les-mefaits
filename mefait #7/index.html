@@ -17,7 +17,7 @@
         html,
         body {
             margin: 0px;
-            background: url(alexis.bmp) no-repeat center center fixed;
+            background: url("alexis fond.jpg") no-repeat center center fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -50,15 +50,20 @@
         }
         
         #menu {
+            align-items: center;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
             position: absolute;
             top: 50%;
-            width: 100%;
+            left: 50%;
+            width: 50%;
             height: 50%;
             color: white;
             font-family: cursive;
             text-align: center;
-            -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
+            -ms-transform: translateY(-50%) translateX(-50%);
+            transform: translateY(-50%) translateX(-50%);
+            ;
         }
     </style>
 </head>
@@ -74,7 +79,13 @@
             <li>Déplacez vous avec les fleches genre gauche droite</li>
             <li><b>Ne tuez pas les olivis !</b></li>
         </ul>
-        <button onclick="start()">Commencer</button>
+        <div style="background-color:rgba(255,255,0,0.75)">
+            Sélectionnez votre personnage :<br>
+            <button onclick="gauche()"><</button>
+            <img id="img" height=100px>
+            <button onclick="droite()">></button>
+        </div>
+        <button onclick="start()">Commencer</button><br>
 
     </div>
     <div id="LEJEU" style="display: none;">
