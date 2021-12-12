@@ -297,6 +297,24 @@ class mor extends Entity {
     }
 }
 
+class Pet extends Entity{
+    constructor(f){
+      super(0, height - 30, 50, 50, rayan);
+      this.dist = 200;
+      this.follower = f;
+    }
+    update() {
+        if (this.follower.x - this.dist < this.x) {
+          this.vx -= 0.5;
+        }
+        if (this.follower.x + this.dist > this.x) {
+          this.vx += 0.5;
+        }
+        this.vx *= 0.95;
+        super.update();
+    }
+}
+
 function resize() {
     width = window.innerWidth,
         height = window.innerHeight,
@@ -363,8 +381,11 @@ document.onmouseup = function(e) {
 }
 
 let joseph = new Joseph();
+let pet = new Pet(joseph);
+let pet2 = new Pet(pet);
+let pet3 = new Pet(pet2);
 let direc = 0;
-let entities = [joseph];
+let entities = [pet, pet2, pet3, joseph];
 let left = false;
 let right = false;
 let up = false;
