@@ -331,6 +331,28 @@ document.addEventListener('keyup', (e) => {
         up = false;
     }
 }, false);
+document.onmousedown = function(e) {
+    if (e.clientX > width / 2) {
+        right = true;
+    }
+    if (e.clientX < width / 2) {
+        left = true;
+    }
+    if (e.clientY < height / 2) {
+        up = true;
+    }
+}
+document.onmouseup = function(e) {
+    if (e.clientX > width / 2) {
+        right = false;
+    }
+    if (e.clientX < width / 2) {
+        left = false;
+    }
+    if (e.clientY < height / 2) {
+        up = false;
+    }
+}
 
 let joseph = new Joseph();
 let direc = 0;
