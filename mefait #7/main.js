@@ -180,7 +180,9 @@ class Vincent extends Entity {
                 }
                 if (score % 30 == 0 && !boss && score != 0) {
                     boss = true;
-                    entities.push(new MegaAlexis(no.x, no.y));
+                    for(let i = 0; i < Math.ceil(score/30); i++){
+                      entities.push(new MegaAlexis(no.x, no.y));
+                    }
                 }
             } else if (no instanceof Olivi) {
                 score -= 1;
