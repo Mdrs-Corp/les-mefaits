@@ -181,11 +181,17 @@ class Vincent extends Entity {
                 if (score % 30 == 0 && !boss && score != 0) {
                     boss = true;
                     for(let i = 0; i < Math.ceil(score/30); i++){
-                      entities.push(new MegaAlexis(no.x, no.y));
+                      entities.push(new MegaAlexis());
                     }
                 }
             } else if (no instanceof Olivi) {
                 score -= 1;
+                if (score < -10 && !mmmmmmm) {
+                  mmmmmmm = true;
+                  for(let i = 0; i < 50; i++){
+                    entities.push(new MegaAlexis());
+                  }
+                }
             }
         })
     }
@@ -366,6 +372,7 @@ let shoot = 0;
 let score = 0;
 let vie = 3;
 let boss = false;
+let mmmmmmm = false;
 
 
 function boucle() {
