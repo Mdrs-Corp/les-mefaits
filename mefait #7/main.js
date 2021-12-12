@@ -26,6 +26,9 @@ dieu.src = "olivi-sec.png";
 let sldwks = new Image();
 sldwks.src = "sldwks.jpg";
 
+let py = new Image();
+py.src = "py.png";
+
 selection = 0;
 img = document.getElementById("img");
 img.src = selection + ".png";
@@ -135,10 +138,11 @@ class MegaAlexis extends Entity {
             this.sy *= 0.9;
             if (this.life < 0) {
                 this.aaron = true;
-                for (let i = 0; i < 100; i++) {
+                for (let i = 0; i < 50; i++) {
                     entities.push(new mor(no.x, no.y));
                 }
-                boss = false;
+                lpet = new Pet(lpet);
+                entities.push(lpet);
             }
         })
     }
@@ -178,8 +182,8 @@ class Vincent extends Entity {
                 for (let i = 0; i < 50; i++) {
                     entities.push(new mor(no.x, no.y));
                 }
-                if (score % 30 == 0 && !boss && score != 0) {
-                    boss = true;
+                if (score % 30 == 0 && Math.ceil(score/30)>boss && score != 0) {
+                    boss++;
                     for(let i = 0; i < Math.ceil(score/30); i++){
                       entities.push(new MegaAlexis());
                     }
@@ -217,6 +221,38 @@ class VincentCaniballe extends Entity {
             vie--;
             if (vie == 0) {
                 end()
+            }
+        })
+    }
+}
+
+class VincentLeBg extends Entity {
+    // les tirs de joseph
+    constructor(x, y) {
+        super(x, y, 20, 20, null);
+        this.vy = -2.1;
+        this.collision = [Alexis];
+    }
+
+    draw() {
+        context.fillStyle = "#6174ee";
+        context.fillRect(this.x - this.sx / 2, this.y - this.sy / 2, this.sx, this.sy);
+    }
+    collide(alex) {
+        super.collide(alex, (yes, no) => {
+            yes.aaron = true;
+            no.aaron = true;
+            if (no instanceof Alexis) {
+                score += 1;
+                for (let i = 0; i < 50; i++) {
+                    entities.push(new mor(no.x, no.y));
+                }
+                if (score % 30 == 0 && Math.ceil(score/30)>boss && score != 0) {
+                    boss++;
+                    for(let i = 0; i < Math.ceil(score/30); i++){
+                      entities.push(new MegaAlexis());
+                    }
+                }
             }
         })
     }
@@ -299,11 +335,18 @@ class mor extends Entity {
 
 class Pet extends Entity{
     constructor(f){
-      super(0, height - 30, 50, 50, rayan);
+      super(0, height - 30, 50, 50, py);
       this.dist = 200;
       this.follower = f;
+      this.time = 700;
+      this.ctime = Math.floor(Math.random()*this.time);
     }
     update() {
+        if (this.ctime < 0) {
+            entities.push(new VincentLeBg(this.x, height - 50));
+            this.ctime = this.time;
+        }
+        this.ctime -= 1;
         if (this.follower.x - this.dist < this.x) {
           this.vx -= 0.5;
         }
@@ -384,6 +427,7 @@ let joseph = new Joseph();
 let pet = new Pet(joseph);
 let pet2 = new Pet(pet);
 let pet3 = new Pet(pet2);
+let lpet = pet3;
 let direc = 0;
 let entities = [pet, pet2, pet3, joseph];
 let left = false;
@@ -392,7 +436,7 @@ let up = false;
 let shoot = 0;
 let score = 0;
 let vie = 3;
-let boss = false;
+let boss = 0;
 let mmmmmmm = false;
 
 
