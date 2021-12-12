@@ -11,7 +11,7 @@ const speed = 5;
 const bulletSpeed = 8;
 const alexisSpeed = 0.8;
 const oliviSpeed = 0.5;
-
+let zic = new Audio("le-sanglier-qui-court-instrumentale.ogg");
 let alex = new Image();
 alex.src = "alexis.bmp";
 
@@ -370,12 +370,15 @@ function boucle() {
 }
 
 function start() {
+
+    zic.play();
     document.getElementById("menu").style.display = "none";
     document.getElementById("LEJEU").style.display = "block";
     window.requestAnimationFrame(boucle);
 }
 
 function end() {
+    zic.pause();
     document.getElementById("LEJEU").style.display = "none";
     document.getElementById("menu").style.display = "block";
     document.getElementById("menu").innerHTML = `<h1>t'as perdu espèce de SI</h1><h2>Score : ${score}</h2><button onclick="location.reload()">Retenter ma chance wlh</button>`;
