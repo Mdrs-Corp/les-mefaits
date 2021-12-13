@@ -424,12 +424,9 @@ document.onmouseup = function(e) {
 }
 
 let joseph = new Joseph();
-let pet = new Pet(joseph);
-let pet2 = new Pet(pet);
-let pet3 = new Pet(pet2);
-let lpet = pet3;
+let lpet = joseph;
 let direc = 0;
-let entities = [pet, pet2, pet3, joseph];
+let entities = [joseph];
 let left = false;
 let right = false;
 let up = false;
